@@ -1,6 +1,5 @@
 import java.util.Date;
 
-
 public class Trajet {
 	private Gare depart;
 	private Gare arrivee;
@@ -8,61 +7,71 @@ public class Trajet {
 	private int nbPlacesReservees;
 	private Date dateDepart;
 	private Date dateArrivee;
-	
-	
+
 	public Gare getDepart() {
 		return depart;
 	}
+
 	public void setDepart(Gare depart) {
 		this.depart = depart;
 	}
+
 	public Gare getArrivee() {
 		return arrivee;
 	}
+
 	public void setArrivee(Gare arrivee) {
 		this.arrivee = arrivee;
 	}
-	
+
 	public int getNbPlaces() {
 		return nbPlaces;
 	}
+
 	public void setNbPlaces(int nbPlaces) {
 		this.nbPlaces = nbPlaces;
 	}
+
 	public int getNbPlacesReservees() {
 		return nbPlacesReservees;
 	}
+
 	public void setNbPlacesReservees(int nbPlacesReservees) {
 		this.nbPlacesReservees = nbPlacesReservees;
 	}
+
 	public Date getDateDepart() {
 		return dateDepart;
 	}
+
 	public void setDateDepart(Date dateDepart) {
 		this.dateDepart = dateDepart;
 	}
+
 	public Date getDateArrivee() {
 		return dateArrivee;
 	}
+
 	public void setDateArrivee(Date dateArrivee) {
 		this.dateArrivee = dateArrivee;
 	}
-	
+
 	public long duree() {
 		return dateArrivee.getTime() - dateDepart.getTime();
 	}
-	
+
 	public double distance() {
 		return depart.distanceTo(arrivee);
 	}
-	
+
 	/**
-	 * Calcul le prix du billet en fonction de la distance de trajet,
-	 * le nombre de places réservées, et 
+	 * Calcul le prix du billet en fonction de la distance de trajet, le nombre
+	 * de places réservées, et
 	 * 
 	 * @return Le prix du trajet (oui monsieur)
 	 */
 	public double prixActuel() {
-		return distance() * 0.42 * (0.7 + (nbPlacesReservees / (nbPlaces * 4.2)));
+		return distance() * 0.42
+				* (0.7 + (nbPlacesReservees / (nbPlaces * 4.2)));
 	}
 }

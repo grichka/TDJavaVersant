@@ -3,7 +3,7 @@ import java.util.Date;
 public class Passager {
 	// Identifiant
 	private String numSecu;
-	
+
 	private String nom;
 	private String prenom;
 	private String adresse;
@@ -17,6 +17,8 @@ public class Passager {
 	private boolean serviceMilitaire;
 	private int nbPartenaires;
 	private int nbEnfants;
+	private double poids;
+	private double taille;
 
 	public String getNom() {
 		return nom;
@@ -128,5 +130,21 @@ public class Passager {
 
 	public void setNbEnfants(int nbEnfants) {
 		this.nbEnfants = nbEnfants;
+	}
+
+	public double getPoids() {
+		return poids;
+	}
+
+	public void setPoids(double poids) {
+		this.poids = poids;
+	}
+
+	public double getTaille() {
+		return taille;
+	}
+
+	public void setTaille(double taille) {
+		this.taille = taille;
 	}
 }

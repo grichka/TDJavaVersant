@@ -13,11 +13,6 @@ public class Gare {
 		this.lon = 15.383574;
 	}
 	
-	public Gare(String nom) {
-		this();
-		this.nom = nom;
-	}
-
 	public String getNom() {
 		return nom;
 	}

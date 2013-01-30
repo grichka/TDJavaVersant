@@ -1,8 +1,7 @@
-
 public class Billet {
 	// Could be null for an anynomous passenger
 	private Passager passager;
-	
+
 	// Could not be null for an random trip
 	private Trajet trajet;
 
