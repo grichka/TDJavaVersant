@@ -17,6 +17,13 @@ public class GestionConsole {
 		PersistenceManager pm = pmf.getPersistenceManager();
 		pm.currentTransaction().begin();
 		
+		Gare gare = new Gare();
+		gare.setNom("testGare");
+		gare.setLat(0.0);
+		gare.setLon(0.0);
+		
+		pm.makePersistent(gare);
+		
 		pm.currentTransaction().commit();
 	}
 	

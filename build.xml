@@ -1,0 +1,16 @@
+<!--
+A simple persistence tutorial.
+-->
+
+<project name="tutorial" default="compile" basedir=".">
+    <property name="jdo.home" value="lib"/>
+    <import file="common.xml"/>
+
+    <target name="run" depends="compile"
+        description="Run the application">
+        <java classname="GestionConsole" classpathref="cp" fork="true">
+            <jvmarg value="-Djava.security.policy=./policy.all"/>
+        </java>
+    </target>
+
+</project>
