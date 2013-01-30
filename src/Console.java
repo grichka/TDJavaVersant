@@ -12,9 +12,12 @@ import java.util.Set;
 public class Console {
 
 	private Scanner scanner;
+	private Gare gare;
 	
 	// TODO
 	public List<Gare> gares;
+	public List<Billet> billets;
+	public List<Trajet> trajets;
 
 	public void start() {
 		scanner = new Scanner(System.in);
@@ -45,6 +48,8 @@ public class Console {
 				e.printStackTrace();
 			}
 
+			if (gare != null)
+				System.out.print(gare.getNom());
 			System.out.print("> ");
 		}
 
@@ -82,15 +87,60 @@ public class Console {
 	public void gares() {
 		for (int i = 0; i < gares.size(); ++i) {
 			System.out.print(i);
-			System.out.print(" - ");
+			System.out.print(" — ");
 			System.out.println(gares.get(i));
 		}
 	}
+	
+	@Aide("Rechercher des gares")
+	public void cgares()
+	{
+		System.out.println("Recherche: ");
+		String recherche = scanner.nextLine().trim();
+		
+		/* L'algorithme n'est pas très optimisé parce que la recherche
+		 * est réalisée en O(n).
+		 * Mais étant donné qu'il n'y a que 3000 gares, ce n'est pas très
+		 * grave.
+		 */
+		for (int i = 0; i < gares.size(); ++i) {
+			String gs = gares.get(i).toString();
+			if (gs.toLowerCase().indexOf(recherche.toLowerCase()) != -1) {
+				System.out.print(i);
+				System.out.print(" — ");
+				System.out.println(gares.get(i));				
+			}
+		}
+	}
+	
+	@Aide("Sélectionne une gare")
+	public void gare()
+	{
+		System.out.println("Numéro ?");
+		int num = Integer.parseInt(scanner.nextLine().trim());
+		
+		if (num >= 0 && num < gares.size())
+			gare = gares.get(num);
+		else
+			System.err.println("Aucune gare ne correspond au numéro");
+	}
+	
 	
 	@Aide("Liste des billets")
 	public void billets() {
 		
 
+	}
+	
+	@Aide("Liste des départs à partir d'une gare")
+	public void departs()
+	{
+		// TODO changer ça
+		ArrayList<Trajet> trajets = new ArrayList<>();
+		
+		for (Trajet t : this.trajets)
+			if (t.getDepart().equals(gare))
+				System.out.println(t);
 	}
 
 }
