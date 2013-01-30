@@ -71,7 +71,39 @@ public class Trajet {
 	 * @return Le prix du trajet (oui monsieur)
 	 */
 	public double prixActuel() {
-		return distance() * 0.42
+		return distance() * 0.00042
 				* (0.7 + (nbPlacesReservees / (nbPlaces * 4.2)));
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Trajet [");
+		if (depart != null) {
+			builder.append("depart=");
+			builder.append(depart);
+			builder.append(", ");
+		}
+		if (arrivee != null) {
+			builder.append("arrivee=");
+			builder.append(arrivee);
+			builder.append(", ");
+		}
+		builder.append("nbPlaces=");
+		builder.append(nbPlaces);
+		builder.append(", nbPlacesReservees=");
+		builder.append(nbPlacesReservees);
+		builder.append(", ");
+		if (dateDepart != null) {
+			builder.append("dateDepart=");
+			builder.append(dateDepart);
+			builder.append(", ");
+		}
+		if (dateArrivee != null) {
+			builder.append("dateArrivee=");
+			builder.append(dateArrivee);
+		}
+		builder.append("]");
+		return builder.toString();
 	}
 }

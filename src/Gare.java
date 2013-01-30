@@ -72,4 +72,9 @@ public class Gare {
 		}
 		return d;
 	}
+
+	@Override
+	public String toString() {
+		return nom;
+	}
 }
