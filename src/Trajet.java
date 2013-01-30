@@ -1,22 +1,55 @@
+import java.util.Date;
+
 
 public class Trajet {
-	private Ville depart;
-	private Ville arrivee;
+	private Gare depart;
+	private Gare arrivee;
 	private int nbPlaces;
 	private int nbPlacesReservees;
+	private Date dateDepart;
+	private Date dateArrivee;
 	
 	
-	public Ville getDepart() {
+	public Gare getDepart() {
 		return depart;
 	}
-	public void setDepart(Ville depart) {
+	public void setDepart(Gare depart) {
 		this.depart = depart;
 	}
-	public Ville getArrivee() {
+	public Gare getArrivee() {
 		return arrivee;
 	}
-	public void setArrivee(Ville arrivee) {
+	public void setArrivee(Gare arrivee) {
 		this.arrivee = arrivee;
+	}
+	
+	public int getNbPlaces() {
+		return nbPlaces;
+	}
+	public void setNbPlaces(int nbPlaces) {
+		this.nbPlaces = nbPlaces;
+	}
+	public int getNbPlacesReservees() {
+		return nbPlacesReservees;
+	}
+	public void setNbPlacesReservees(int nbPlacesReservees) {
+		this.nbPlacesReservees = nbPlacesReservees;
+	}
+	public Date getDateDepart() {
+		return dateDepart;
+	}
+	public void setDateDepart(Date dateDepart) {
+		this.dateDepart = dateDepart;
+	}
+	public Date getDateArrivee() {
+		return dateArrivee;
+	}
+	public void setDateArrivee(Date dateArrivee) {
+		this.dateArrivee = dateArrivee;
+	}
+	
+	public long duree() {
+		return dateArrivee.getTime() - dateDepart.getTime();
 	}
 	
 	public double distance() {

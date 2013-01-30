@@ -1,11 +1,11 @@
 
-public class Ville {
+public class Gare {
 	private String nom;
 	
 	private double lat;
 	private double lon;
 
-	public Ville() {
+	public Gare() {
 		this.nom = null;
 		
 		// Heart island
@@ -13,7 +13,7 @@ public class Ville {
 		this.lon = 15.383574;
 	}
 	
-	public Ville(String nom) {
+	public Gare(String nom) {
 		this();
 		this.nom = nom;
 	}
@@ -57,10 +57,10 @@ public class Ville {
 	 * 
 	 * @return Distance en mètres.
 	 */
-	public double distanceTo(Ville otherVille) {
+	public double distanceTo(Gare otherGare) {
 		double R = 6378137;
-		double sinHalfLat = Math.sin(Math.toRadians(otherVille.lat - this.lat) / 2);
-		double sinHalfLon = Math.sin(Math.toRadians(otherVille.lon - this.lon) / 2);
+		double sinHalfLat = Math.sin(Math.toRadians(otherGare.lat - this.lat) / 2);
+		double sinHalfLon = Math.sin(Math.toRadians(otherGare.lon - this.lon) / 2);
 		double d = 2
 				* R
 				* Math.asin(Math.sqrt(sinHalfLat * sinHalfLat
