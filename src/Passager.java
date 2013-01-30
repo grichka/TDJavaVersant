@@ -19,6 +19,7 @@ public class Passager {
 	private int nbEnfants;
 	private double poids;
 	private double taille;
+	private String sex;
 
 	public String getNom() {
 		return nom;
@@ -146,5 +147,35 @@ public class Passager {
 
 	public void setTaille(double taille) {
 		this.taille = taille;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Passager [");
+		if (numSecu != null) {
+			builder.append("numSecu=");
+			builder.append(numSecu);
+			builder.append(", ");
+		}
+		if (nom != null) {
+			builder.append("nom=");
+			builder.append(nom);
+			builder.append(", ");
+		}
+		if (prenom != null) {
+			builder.append("prenom=");
+			builder.append(prenom);
+		}
+		builder.append("]");
+		return builder.toString();
 	}
 }
