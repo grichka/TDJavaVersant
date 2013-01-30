@@ -200,6 +200,8 @@ public class InitialisationData {
 
 		Console c = new Console();
 		c.gares = gares;
+		c.trajets = trajets;
+		c.billets = billets;
 		c.start();
 	}
 }
