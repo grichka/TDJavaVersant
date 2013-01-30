@@ -4,6 +4,10 @@ public class Billet {
 
 	// Could not be null for an random trip
 	private Trajet trajet;
+	
+	// Prix de vente du billet
+	// qui peut différer du prix du trajet qui n'est pas fixe
+	private double prix;
 
 	public Passager getPassager() {
 		return passager;
@@ -19,5 +23,13 @@ public class Billet {
 
 	public void setTrajet(Trajet trajet) {
 		this.trajet = trajet;
+	}
+
+	public double getPrix() {
+		return prix;
+	}
+
+	public void setPrix(double prix) {
+		this.prix = prix;
 	}
 }

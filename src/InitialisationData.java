@@ -12,6 +12,7 @@ public class InitialisationData {
 		List<Gare> gares = new ArrayList<>();
 		List<Trajet> trajets = new ArrayList<>();
 		List<Passager> passagers = new ArrayList<>();
+		List<Billet> billets = new ArrayList<>();
 
 		// La graine est un canard
 		Random r = new Random("canard".hashCode());
@@ -186,6 +187,19 @@ public class InitialisationData {
 		}
 		
 		System.out.println("Création de 50000 passagers");
+		
+		for (int i = 0; i < 200000; ++i) {
+			Billet billet = new Billet();
+			billet.setPassager(passagers.get(r.nextInt(passagers.size())));
+			Trajet trajet = trajets.get(r.nextInt(trajets.size()));
+			billet.setPrix(trajet.prixActuel());
+			billets.add(billet);
+		}
+		
+		System.out.println("Création de 200000 billets");
 
+		Console c = new Console();
+		c.gares = gares;
+		c.start();
 	}
 }
