@@ -198,5 +198,8 @@ public class InitialisationData {
 		
 		System.out.println("Création de 200000 billets");
 
+		Console c = new Console();
+		c.gares = gares;
+		c.start();
 	}
 }
