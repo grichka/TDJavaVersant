@@ -1,14 +1,27 @@
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.Random;
 import java.util.Scanner;
+
+import javax.jdo.JDOHelper;
+import javax.jdo.PersistenceManager;
+import javax.jdo.PersistenceManagerFactory;
 
 public class InitialisationData {
 
 	public static void main(String[] args) throws Exception {
-		System.out.println("Initialisation des données");
+		Properties p = loadProperties();
+		PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory(p);
+		
+		PersistenceManager pm = pmf.getPersistenceManager();
+		pm.currentTransaction().begin();
+		
+		System.out.println("Initialisation des donnees");
 		List<Gare> gares = new ArrayList<>();
 		List<Trajet> trajets = new ArrayList<>();
 		List<Passager> passagers = new ArrayList<>();
@@ -31,12 +44,16 @@ public class InitialisationData {
 			gare.setNom(infosGare[0] + " - " + infosGare[1]);
 			gare.setLat(Double.valueOf(infosGare[2]));
 			gare.setLon(Double.valueOf(infosGare[3]));
+			
+			pm.makePersistent(gare);
 			gares.add(gare);
 		}
+		
+		sc.close();
 
 		int nbGares = gares.size();
 		System.out.print(nbGares);
-		System.out.println(" gares chargées.");
+		System.out.println(" gares chargees.");
 
 		for (int i = 0; i < 15000; ++i) {
 			Trajet trajet = new Trajet();
@@ -54,10 +71,11 @@ public class InitialisationData {
 			trajet.setDateArrivee(new Date((trajet.getDateDepart().getTime())
 					+ ((long) trajet.distance() * 15)));
 
+			pm.makePersistent(trajet);
 			trajets.add(trajet);
 		}
 
-		System.out.println("15000 trajets ajoutés");
+		System.out.println("15000 trajets ajoutes");
 
 		// Les noms proviennent de
 		// https://github.com/fzaninotto/Faker/blob/master/src/Faker/Provider/fr_FR/Person.php
@@ -183,25 +201,51 @@ public class InitialisationData {
 			// Le passager est né entre le 1er janvier 1970 et maintenant
 			passager.setDateNaissance(new Date(((long) r.nextInt((int) (currentTimestamp/1000))*1000)));
 			
+			pm.makePersistent(passager);
 			passagers.add(passager);
 		}
 		
-		System.out.println("Création de 50000 passagers");
+		System.out.println("Creation de 50000 passagers");
 		
 		for (int i = 0; i < 200000; ++i) {
 			Billet billet = new Billet();
 			billet.setPassager(passagers.get(r.nextInt(passagers.size())));
 			Trajet trajet = trajets.get(r.nextInt(trajets.size()));
 			billet.setPrix(trajet.prixActuel());
+			billet.setTrajet(trajet);
+			
+			pm.makePersistent(billet);
 			billets.add(billet);
 		}
 		
-		System.out.println("Création de 200000 billets");
-
-		Console c = new Console();
+		System.out.println("Creation de 200000 billets");
+		
+		pm.currentTransaction().commit();
+		
+		/*Console c = new Console();
 		c.gares = gares;
 		c.trajets = trajets;
 		c.billets = billets;
-		c.start();
+		c.start();*/
 	}
+	
+	/**
+	 * Charge le fichier versant.properties, afin d'initialiser le persistence manager.
+	 * @return
+	 * @throws IOException
+	 */
+	private static Properties loadProperties() throws IOException {
+        Properties p = new Properties();
+        InputStream in = null;
+        try {
+            in = InitialisationData.class.getResourceAsStream("/versant.properties");
+            if (in == null) {
+                throw new IOException("versant.properties not on classpath");
+            }
+            p.load(in);
+        } finally {
+            if (in != null) in.close();
+        }
+        return p;
+    }
 }

@@ -8,7 +8,7 @@ import javax.jdo.PersistenceManagerFactory;
 
 public class GestionConsole {
 	public static void main(String[] args) throws IOException {
-		System.out.println("Bienvenue dans l'interface de gestion de réservation de billets de train");
+		/*System.out.println("Bienvenue dans l'interface de gestion de réservation de billets de train");
 		
 		// load versant.properties project file as properties to connect
 		Properties p = loadProperties();
@@ -24,7 +24,7 @@ public class GestionConsole {
 		
 		pm.makePersistent(gare);
 		
-		pm.currentTransaction().commit();
+		pm.currentTransaction().commit();*/
 	}
 	
 	/**
