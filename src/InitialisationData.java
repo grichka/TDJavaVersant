@@ -1,21 +1,9 @@
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 import java.util.Random;
 import java.util.Scanner;
-
-<<<<<<< HEAD
-import com.db4o.Db4oEmbedded;
-import com.db4o.ObjectContainer;
-=======
-import javax.jdo.JDOHelper;
-import javax.jdo.PersistenceManager;
-import javax.jdo.PersistenceManagerFactory;
->>>>>>> 1c010afa4434de280c9c98de833a17a4db2b9b9b
 
 public class InitialisationData {
 
@@ -24,11 +12,7 @@ public class InitialisationData {
 		data.open();
 		
 		System.out.println("Initialisation des données");
-=======
 		
-		
-		System.out.println("Initialisation des donnees");
->>>>>>> 1c010afa4434de280c9c98de833a17a4db2b9b9b
 		List<Gare> gares = new ArrayList<>();
 		List<Trajet> trajets = new ArrayList<>();
 		List<Passager> passagers = new ArrayList<>();
@@ -54,9 +38,8 @@ public class InitialisationData {
 			gare.setLat(Double.valueOf(infosGare[2]));
 			gare.setLon(Double.valueOf(infosGare[3]));
 			
-			pm.makePersistent(gare);
 			gares.add(gare);
-			db.store(gare);
+			data.persist(gare);
 		}
 		
 		sc.close();
@@ -82,9 +65,8 @@ public class InitialisationData {
 			trajet.setDateArrivee(new Date((trajet.getDateDepart().getTime())
 					+ ((long) trajet.distance() * 15)));
 
-			pm.makePersistent(trajet);
 			trajets.add(trajet);
-			db.store(trajet);
+			data.persist(trajet);
 		}
 
 		System.out.println("15000 trajets ajoutes");
@@ -213,12 +195,11 @@ public class InitialisationData {
 			// Le passager est né entre le 1er janvier 1970 et maintenant
 			passager.setDateNaissance(new Date(((long) r.nextInt((int) (currentTimestamp/1000))*1000)));
 			
-			pm.makePersistent(passager);
 			passagers.add(passager);
-			db.store(passager);
+			data.persist(passager);
 		}
 		
-		System.out.println("Creation de 50000 passagers");
+		System.out.println("Création de 50000 passagers");
 		
 		for (i = 0; i < 200000; ++i) {
 			Billet billet = new Billet();
@@ -228,21 +209,16 @@ public class InitialisationData {
 			billet.setPrix(trajet.prixActuel());
 			billet.setTrajet(trajet);
 			
-			pm.makePersistent(billet);
 			billets.add(billet);
-			db.store(billet);
+			data.persist(billet);
 		}
 		
-<<<<<<< HEAD
 		System.out.println("Création de 200000 billets");
 		
-
-=======
-		System.out.println("Creation de 200000 billets");
+		data.commit();
+		data.close();
 		
-		db.commit();
-		db.close();
-//		pm.currentTransaction().commit();
+		System.out.println("Initialisation des données terminée");
 		
 		/*Console c = new Console();
 		c.gares = gares;
@@ -250,24 +226,4 @@ public class InitialisationData {
 		c.billets = billets;
 		c.start();*/
 	}
-	
-	/**
-	 * Charge le fichier versant.properties, afin d'initialiser le persistence manager.
-	 * @return
-	 * @throws IOException
-	 */
-	private static Properties loadProperties() throws IOException {
-        Properties p = new Properties();
-        InputStream in = null;
-        try {
-            in = InitialisationData.class.getResourceAsStream("/versant.properties");
-            if (in == null) {
-                throw new IOException("versant.properties not on classpath");
-            }
-            p.load(in);
-        } finally {
-            if (in != null) in.close();
-        }
-        return p;
-    }
 }
