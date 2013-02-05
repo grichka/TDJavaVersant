@@ -36,7 +36,7 @@ public class InitialisationData {
 			String[] infosGare = line.split(",");
 
 			Gare gare = new Gare();
-			gare.setCode(Integer.toString(i++, 26).toUpperCase());
+			gare.setCode(Integer.toString(i++, 36).toUpperCase());
 			gare.setNom(infosGare[0] + " - " + infosGare[1]);
 			gare.setLat(Double.valueOf(infosGare[2]));
 			gare.setLon(Double.valueOf(infosGare[3]));
@@ -50,7 +50,7 @@ public class InitialisationData {
 
 		for (i = 0; i < 15000; ++i) {
 			Trajet trajet = new Trajet();
-			trajet.setCode(Integer.toString(i, 26).toUpperCase());
+			trajet.setCode(Integer.toString(i, 36).toUpperCase());
 			
 			trajet.setDepart(gares.get(r.nextInt(nbGares)));
 			trajet.setArrivee(gares.get(r.nextInt(nbGares)));
@@ -187,7 +187,7 @@ public class InitialisationData {
 		
 		for (i = 0; i < 50000; ++i) {
 			Passager passager = new Passager();
-			passager.setNumSecu(Integer.toString(i, 26).toUpperCase());
+			passager.setNumSecu(Integer.toString(i, 36).toUpperCase());
 			
 			passager.setNom(noms[r.nextInt(noms.length)]);
 			passager.setPrenom(prenoms[r.nextInt(prenoms.length)]);
@@ -203,7 +203,7 @@ public class InitialisationData {
 		
 		for (i = 0; i < 200000; ++i) {
 			Billet billet = new Billet();
-			billet.setCode(Integer.toString(i, 26).toUpperCase());
+			billet.setCode(Integer.toString(i, 36).toUpperCase());
 			billet.setPassager(passagers.get(r.nextInt(passagers.size())));
 			Trajet trajet = trajets.get(r.nextInt(trajets.size()));
 			billet.setPrix(trajet.prixActuel());
