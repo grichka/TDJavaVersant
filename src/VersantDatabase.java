@@ -61,4 +61,8 @@ public class VersantDatabase implements IDatabase {
 		pm.close();
 	}
 
+	@Override
+	public void begin() {
+		pm.currentTransaction().begin();
+	}
 }

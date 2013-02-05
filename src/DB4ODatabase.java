@@ -32,4 +32,8 @@ public class DB4ODatabase implements IDatabase {
 		db.close();
 	}
 
+	@Override
+	public void begin() {
+		//rien
+	}
 }
