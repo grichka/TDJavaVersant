@@ -9,7 +9,7 @@ import javax.jdo.PersistenceManagerFactory;
 
 public class VersantDatabase implements IDatabase {
 
-	private PersistenceManager pm;
+	protected PersistenceManager pm;
 	
 	@Override
 	public void open() {
