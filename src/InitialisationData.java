@@ -5,9 +5,16 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+import com.db4o.Db4oEmbedded;
+import com.db4o.ObjectContainer;
+
 public class InitialisationData {
 
 	public static void main(String[] args) throws Exception {
+		
+		ObjectContainer db = Db4oEmbedded.openFile(Db4oEmbedded
+				.newConfiguration(), "database.db4o");
+		
 		System.out.println("Initialisation des données");
 		List<Gare> gares = new ArrayList<>();
 		List<Trajet> trajets = new ArrayList<>();
@@ -22,25 +29,29 @@ public class InitialisationData {
 		// http://www.data.gouv.fr/donnees/view/Liste-des-gares-de-voyageurs-du-RFN-avec-coordonn%C3%A9es-30383099
 		FileReader fichierGares = new FileReader("gares.csv");
 		Scanner sc = new Scanner(fichierGares);
-
+		
+		int i = 0;
 		while (sc.hasNextLine()) {
 			String line = sc.nextLine();
 			String[] infosGare = line.split(",");
 
 			Gare gare = new Gare();
+			gare.setCode(Integer.toString(i++, 26).toUpperCase());
 			gare.setNom(infosGare[0] + " - " + infosGare[1]);
 			gare.setLat(Double.valueOf(infosGare[2]));
 			gare.setLon(Double.valueOf(infosGare[3]));
 			gares.add(gare);
+			db.store(gare);
 		}
 
 		int nbGares = gares.size();
 		System.out.print(nbGares);
 		System.out.println(" gares chargées.");
 
-		for (int i = 0; i < 15000; ++i) {
+		for (i = 0; i < 15000; ++i) {
 			Trajet trajet = new Trajet();
-
+			trajet.setCode(Integer.toString(i, 26).toUpperCase());
+			
 			trajet.setDepart(gares.get(r.nextInt(nbGares)));
 			trajet.setArrivee(gares.get(r.nextInt(nbGares)));
 
@@ -55,6 +66,7 @@ public class InitialisationData {
 					+ ((long) trajet.distance() * 15)));
 
 			trajets.add(trajet);
+			db.store(trajet);
 		}
 
 		System.out.println("15000 trajets ajoutés");
@@ -173,9 +185,9 @@ public class InitialisationData {
 				"Thierry", "Samson", "Ledoux", "Salmon", "Gosselin", "Lecoq",
 				"Pires", "Leleu", "Becker", "Diallo", "Merle", "Valette" };
 		
-		for (int i = 0; i < 50000; ++i) {
+		for (i = 0; i < 50000; ++i) {
 			Passager passager = new Passager();
-			passager.setNumSecu(Integer.toOctalString(i));
+			passager.setNumSecu(Integer.toString(i, 26).toUpperCase());
 			
 			passager.setNom(noms[r.nextInt(noms.length)]);
 			passager.setPrenom(prenoms[r.nextInt(prenoms.length)]);
@@ -184,24 +196,30 @@ public class InitialisationData {
 			passager.setDateNaissance(new Date(((long) r.nextInt((int) (currentTimestamp/1000))*1000)));
 			
 			passagers.add(passager);
+			db.store(passager);
 		}
 		
 		System.out.println("Création de 50000 passagers");
 		
-		for (int i = 0; i < 200000; ++i) {
+		for (i = 0; i < 200000; ++i) {
 			Billet billet = new Billet();
+			billet.setCode(Integer.toString(i, 26).toUpperCase());
 			billet.setPassager(passagers.get(r.nextInt(passagers.size())));
 			Trajet trajet = trajets.get(r.nextInt(trajets.size()));
 			billet.setPrix(trajet.prixActuel());
 			billets.add(billet);
+			db.store(billet);
 		}
 		
 		System.out.println("Création de 200000 billets");
+		
+		db.commit();
+		db.close();
 
-		Console c = new Console();
+		/*Console c = new Console();
 		c.gares = gares;
 		c.trajets = trajets;
 		c.billets = billets;
-		c.start();
+		c.start();*/
 	}
 }

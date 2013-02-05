@@ -1,5 +1,7 @@
 
 public class Gare {
+	private String code;
+	
 	private String nom;
 	
 	private double lat;
@@ -13,6 +15,14 @@ public class Gare {
 		this.lon = 15.383574;
 	}
 	
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
 	public String getNom() {
 		return nom;
 	}

@@ -1,12 +1,21 @@
 import java.util.Date;
 
 public class Trajet {
+	private String code;
 	private Gare depart;
 	private Gare arrivee;
 	private int nbPlaces;
 	private int nbPlacesReservees;
 	private Date dateDepart;
 	private Date dateArrivee;
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
 
 	public Gare getDepart() {
 		return depart;

@@ -1,3 +1,4 @@
 .settings/
 bin/
 .*
+database.db4o
