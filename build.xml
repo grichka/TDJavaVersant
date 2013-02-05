@@ -1,0 +1,21 @@
+<!--
+A simple persistence tutorial.
+-->
+
+<project name="ohnomnomnom" default="compile" basedir=".">
+    <property name="jdo.home" value="lib"/>
+    <import file="common.xml"/>
+
+    <target name="peupler-la-base" depends="compile" description="peuple la base avec un nombre satisfaisant d'objets.">
+        <java classname="InitialisationData" classpathref="cp" fork="true">
+            <jvmarg value="-Djava.security.policy=./policy.all"/>
+        </java>
+    </target>
+	
+	<target name="admin-console" depends="compile" description="Lance la console d'administration">
+        <java classname="GestionConsole" classpathref="cp" fork="true">
+            <jvmarg value="-Djava.security.policy=./policy.all"/>
+        </java>
+    </target>
+
+</project>

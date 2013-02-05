@@ -1,0 +1,83 @@
+<!--
+This is imported by all the demo build.xml files.
+-->
+
+<project name="demo" basedir=".">
+
+    <property name="src" value="src"/>
+    <property name="build" value="build"/>
+    <property name="build.classes" value="${build}/classes"/>
+    <property name="jdo.project" value="versant.properties"/>
+    <property name="jdo.home" value="/home/moreau/Desktop/BDA/Versant/sdk"/>
+    <property name="jdo.lib" value="lib"/>
+    <property name="jdo.sdklib" value="lib"/>
+    <property name="jca.home" value="${jdo.home}/../../thirdparty/jca/jdo"/>
+
+    <path id="cp-project"/>
+
+    <path id="cp">
+        <pathelement path="${src}"/>
+        <pathelement path="${build.classes}"/>
+        <fileset dir="${jdo.lib}" includes="**/*.jar"/>
+        <fileset dir="${jdo.sdklib}" includes="**/*.jar"/>
+        <path refid="cp-project"/>
+    </path>
+
+    <target name="clean"
+        description="Get rid of all generated files">
+        <delete dir="${build}"/>
+        <mkdir dir="${build.classes}"/>
+    </target>
+
+    <target name="init">
+        <mkdir dir="${build.classes}"/>
+        <copy file="${jdo.project}" todir="${build.classes}"/>
+        <!-- Define Versant JDO tasks (jdo-xxx) -->
+        <taskdef resource="versant.tasks">
+            <classpath>
+                <path refid="cp"/>
+            </classpath>
+        </taskdef>
+    </target>
+
+    <target name="compile" depends="init"
+        description="Compile and enhance all Java sources">
+        <dependset>
+            <!-- Delete the classes if the JDO meta data has been changed.
+                 They need to be recompiled and enhanced. -->
+            <srcfileset dir="${src}" includes="**/*.jdo"/>
+            <targetfileset dir="${build.classes}" includes="**/*.class"/>
+        </dependset>
+        <javac srcdir="${src}" destdir="${build.classes}" classpathref="cp" debug="true"/>
+        <jdo-enhance outputdir="${build.classes}" classpathref="cp">
+            <persistentaware dir="${build.classes}"/>
+        </jdo-enhance>
+    </target>
+    
+    
+	<!-- create the EJB jar -->
+    <target name="ejb" description="Create the ejb jar file" depends="compile">
+		<mkdir dir="${dist.dir}"/>
+		<mkdir dir="${build.ejb.dir}"/>
+		<delete includeemptydirs="true">
+			<fileset dir="${build.ejb.dir}" includes="**/*"/>
+		</delete>
+		<copy todir="${build.ejb.dir}">
+			<fileset dir="${build.classes.dir}">
+			<include name="**/*"/>
+			</fileset>
+		</copy>
+		
+		<mkdir dir="${build.ejb.dir}/META-INF"/>
+		<copy todir="${build.ejb.dir}/META-INF">
+			<fileset dir="${etc.dir}/ejb"/>
+		</copy>
+		<copy file="${project.file.name}" tofile="${build.ejb.dir}/META-INF/versant.properties"/>
+		<copy todir="${build.ejb.dir}">
+			<fileset dir="${src.dir}" includes="**/*.jdo"/>
+		</copy>
+		<jar jarfile="${dist.dir}/tut1sb.jar"
+			basedir="${build.ejb.dir}"/>
+	</target>
+
+</project>
