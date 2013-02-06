@@ -57,16 +57,32 @@ public class DBVersantOperations extends VersantDatabase implements DBOperations
 		return (Passager) q.execute(nom);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Passager> searchPassager(String nom) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Passager> l = new ArrayList<Passager>();
+		Query q = pm.newQuery(Passager.class);
+		//q.setFilter("nom.matches(nomp)");
+		q.setFilter("nom.matches(\".*" + nom + ".*\")");
+		Collection<Passager> c = (Collection<Passager>) q.execute();
+		if(c != null) {
+			l = new ArrayList<Passager>(c);
+		}
+		return l;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Gare> searchGare(String nom) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Gare> l = new ArrayList<Gare>();
+		Query q = pm.newQuery(Gare.class);
+		//q.setFilter("nom.matches(nomp)");
+		q.setFilter("nom.matches(\".*" + nom + ".*\")");
+		Collection<Gare> c = (Collection<Gare>) q.execute();
+		if(c != null) {
+			l = new ArrayList<Gare>(c);
+		}
+		return l;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -121,7 +137,8 @@ public class DBVersantOperations extends VersantDatabase implements DBOperations
 	@Override
 	public int getNbBillets() {
 		Query q = pm.newQuery(Billet.class);
-		Collection c = (Collection) q.execute();
+		q.declareParameters("String versantOptions");
+		Collection c = (Collection) q.execute("countStarOnSize=true");
 		return c == null ? 0 : c.size();
 	}
 
@@ -157,7 +174,8 @@ public class DBVersantOperations extends VersantDatabase implements DBOperations
 	@Override
 	public List<Double> getPrixBillets() {
 		List<Double> l = new ArrayList<Double>();
-		Query q = pm.newQuery("select b->prix() from b in Billet");
+		Query q = pm.newQuery(Billet.class);
+		q.setResult("prix");
 		Collection<Double> c = (Collection<Double>) q.execute();
 		if(c != null) {
 			l = new ArrayList<Double>(c);
@@ -203,17 +221,5 @@ public class DBVersantOperations extends VersantDatabase implements DBOperations
 			l.add(b.getTrajet());
 		}
 		return l;
-	}
-
-	@Override
-	public List<Passager> searchPassager(String nom) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Gare> searchGare(String nom) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

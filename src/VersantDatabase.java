@@ -65,4 +65,9 @@ public class VersantDatabase implements IDatabase {
 	public void close() {
 		pm.close();
 	}
+
+	@Override
+	public void delete(Object o) {
+		pm.deletePersistent(o);
+	}
 }

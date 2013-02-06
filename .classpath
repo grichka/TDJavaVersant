@@ -8,5 +8,7 @@
 	<classpathentry kind="lib" path="lib/asm-all-3.3.1.jar"/>
 	<classpathentry kind="lib" path="lib/bcel.jar"/>
 	<classpathentry kind="lib" path="lib/jta-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/antlr-3.1.1-runtime.jar"/>
+	<classpathentry kind="con" path="JDO_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

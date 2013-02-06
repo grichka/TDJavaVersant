@@ -18,4 +18,9 @@ A simple persistence tutorial.
         </java>
     </target>
 
+	<target name="main-test" depends="compile" description="Lance un test pour le dev">
+        <java classname="Main2" classpathref="cp" fork="true">
+            <jvmarg value="-Djava.security.policy=./policy.all"/>
+        </java>
+    </target>
 </project>
