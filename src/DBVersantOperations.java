@@ -184,7 +184,9 @@ public class DBVersantOperations extends VersantDatabase implements DBOperations
 	@Override
 	public List<Double> getPrixBillets() {
 		List<Double> prix = new ArrayList<Double>();
-		//TODO
+		Query q = pm.newQuery("select");
+		
+		
 		return prix;
 	}
 	

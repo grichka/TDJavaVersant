@@ -1,7 +1,7 @@
 import java.util.List;
 
 /**
- * Op�rations possibles en base pour notre application.
+ * Oprations possibles en base pour notre application.
  */
 public interface DBOperations {
 	public Billet getBillet(String code);
@@ -14,6 +14,9 @@ public interface DBOperations {
 	public List<Gare> getGares();
 	public List<Trajet> getTrajets();
 	public List<Passager> getPassagers();
+	
+	public List<Passager> searchPassager(String nom);
+	public List<Gare> searchGare(String nom);
 	
 	public void removeBillet(String code);
 	public void removeBillet(Billet billet);
