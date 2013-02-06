@@ -181,4 +181,10 @@ public class DBDB40Operations extends DB4ODatabase implements DBOperations {
 		return db.queryByExample(proto);
 	}
 
+	@Override
+	public List<Billet> getBilletsOfPassager(Passager passager) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
