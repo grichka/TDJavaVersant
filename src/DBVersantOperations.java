@@ -57,6 +57,18 @@ public class DBVersantOperations extends VersantDatabase implements DBOperations
 		return (Passager) q.execute(nom);
 	}
 
+	@Override
+	public List<Passager> searchPassager(String nom) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Gare> searchGare(String nom) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Billet> getBillets() {
@@ -181,13 +193,16 @@ public class DBVersantOperations extends VersantDatabase implements DBOperations
 		return l;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Double> getPrixBillets() {
-		List<Double> prix = new ArrayList<Double>();
-		Query q = pm.newQuery("select");
-		
-		
-		return prix;
+		List<Double> l = new ArrayList<Double>();
+		Query q = pm.newQuery("select b->prix() from b in Billet");
+		Collection<Double> c = (Collection<Double>) q.execute();
+		if(c != null) {
+			l = new ArrayList<Double>(c);
+		}
+		return l;
 	}
 	
 	@Override
