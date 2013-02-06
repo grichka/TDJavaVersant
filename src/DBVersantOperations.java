@@ -9,7 +9,6 @@ import javax.jdo.Query;
 public class DBVersantOperations extends VersantDatabase implements DBOperations {
 	public DBVersantOperations() {
 		super();
-		open();
 	}
 	
 	@Override
@@ -57,16 +56,31 @@ public class DBVersantOperations extends VersantDatabase implements DBOperations
 		return (Passager) q.execute(nom);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Passager> searchPassager(String nom) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Passager> l = new ArrayList<Passager>();
+		Query q = pm.newQuery(Passager.class);
+		q.setFilter("nom.toLowerCase().matches(\".*" + nom.toLowerCase() + ".*\")");
+		Collection<Passager> c = (Collection<Passager>) q.execute();
+		if(c != null) {
+			l = new ArrayList<Passager>(c);
+		}
+		return l;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Gare> searchGare(String nom) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Gare> l = new ArrayList<Gare>();
+		Query q = pm.newQuery(Gare.class);
+		//q.setFilter("nom.matches(nomp)");
+		q.setFilter("nom.toLowerCase().matches(\".*" + nom.toLowerCase() + ".*\")");
+		Collection<Gare> c = (Collection<Gare>) q.execute();
+		if(c != null) {
+			l = new ArrayList<Gare>(c);
+		}
+		return l;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -121,43 +135,53 @@ public class DBVersantOperations extends VersantDatabase implements DBOperations
 	@Override
 	public int getNbBillets() {
 		Query q = pm.newQuery(Billet.class);
-		Collection c = (Collection) q.execute();
+		q.declareParameters("String versantOptions");
+		Collection c = (Collection) q.execute("countStarOnSize=true");
 		return c == null ? 0 : c.size();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Trajet> getTrajetsFromGare(Gare gare) {
-		List<Trajet> l = new ArrayList<Trajet>();
-		Query q = pm.newQuery(Trajet.class);
-		q.declareParameters("Gare gare");
-		q.setFilter("depart == gare");
-		Collection<Trajet> c = (Collection<Trajet>) q.execute(gare);
-		if(c != null) {
-			l = new ArrayList<Trajet>(c);
+		if(gare == null) {
+			return getTrajets();
+		} else {
+			List<Trajet> l = new ArrayList<Trajet>();
+			Query q = pm.newQuery(Trajet.class);
+			q.declareParameters("Gare gare");
+			q.setFilter("depart == gare");
+			Collection<Trajet> c = (Collection<Trajet>) q.execute(gare);
+			if(c != null) {
+				l = new ArrayList<Trajet>(c);
+			}
+			return l;
 		}
-		return l;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Trajet> getTrajetsToGare(Gare gare) {
-		List<Trajet> l = new ArrayList<Trajet>();
-		Query q = pm.newQuery(Trajet.class);
-		q.declareParameters("Gare gare");
-		q.setFilter("arrivee == gare");
-		Collection<Trajet> c = (Collection<Trajet>) q.execute(gare);
-		if(c != null) {
-			l = new ArrayList<Trajet>(c);
+		if(gare == null) {
+			return getTrajets();
+		} else {
+			List<Trajet> l = new ArrayList<Trajet>();
+			Query q = pm.newQuery(Trajet.class);
+			q.declareParameters("Gare gare");
+			q.setFilter("arrivee == gare");
+			Collection<Trajet> c = (Collection<Trajet>) q.execute(gare);
+			if(c != null) {
+				l = new ArrayList<Trajet>(c);
+			}
+			return l;
 		}
-		return l;
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Double> getPrixBillets() {
 		List<Double> l = new ArrayList<Double>();
-		Query q = pm.newQuery("select b->prix() from b in Billet");
+		Query q = pm.newQuery(Billet.class);
+		q.setResult("prix");
 		Collection<Double> c = (Collection<Double>) q.execute();
 		if(c != null) {
 			l = new ArrayList<Double>(c);
@@ -180,39 +204,88 @@ public class DBVersantOperations extends VersantDatabase implements DBOperations
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Trajet> getTrajets(Passager passager) {
-		List<Trajet> l = new ArrayList<Trajet>();
-		Query q = pm.newQuery(Billet.class);
-		q.declareParameters("Passager passager");
-		q.setFilter("passager == passager");
-		Collection<Billet> c = (Collection<Billet>) q.execute(passager);
-		for(Billet b : c) {
-			l.add(b.getTrajet());
+		if(passager == null) {
+			return getTrajets();
+		} else {
+			List<Trajet> l = new ArrayList<Trajet>();
+			Query q = pm.newQuery(Billet.class);
+			q.declareParameters("Passager passager");
+			q.setFilter("passager == passager");
+			q.setResult("trajet");
+			Collection<Trajet> c = (Collection<Trajet>) q.execute(passager);
+			if(c != null) {
+				l = new ArrayList<Trajet>(c);
+			}
+			return l;
 		}
-		return l;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Trajet> getTrajets(Passager passager1, Passager passager2) {
-		List<Trajet> l = new ArrayList<Trajet>();
+		List<Trajet> l1 = new ArrayList<Trajet>();
 		Query q = pm.newQuery(Billet.class);
-		q.declareParameters("Passager passager1, Passager passager2");
-		q.setFilter("passager == passager1 || passager == passager2");
-		Collection<Billet> c = (Collection<Billet>) q.execute(passager1, passager2);
-		for(Billet b : c) {
-			l.add(b.getTrajet());
+		q.declareParameters("Passager passager1");
+		q.setFilter("passager == passager1");
+		q.setResult("trajet");
+		Collection<Trajet> c1 = (Collection<Trajet>) q.execute(passager1);
+		if(c1 != null) {
+			l1 = new ArrayList<Trajet>(c1);
 		}
-		return l;
+		
+		List<Trajet> l2 = new ArrayList<Trajet>();
+		Query q2 = pm.newQuery(Billet.class);
+		q2.declareParameters("Passager passager2");
+		q2.setFilter("passager == passager2");
+		q2.setResult("trajet");
+		Collection<Trajet> c2 = (Collection<Trajet>) q2.execute(passager2);
+		if(c2 != null) {
+			l2 = new ArrayList<Trajet>(c2);
+		}
+		
+		l1.retainAll(l2);
+		return l1;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Passager> getPassagersOfTrajet(Trajet trajet) {
+		if(trajet == null) {
+			return getPassagers();
+		} else {
+			List<Passager> l = new ArrayList<Passager>();
+			Query q = pm.newQuery(Billet.class);
+			q.declareParameters("Trajet t");
+			q.setFilter("trajet == t");
+			q.setResult("passager");
+			Collection<Passager> c = (Collection<Passager>) q.execute(trajet);
+			if(c != null) {
+				l = new ArrayList<Passager>(c);
+			}
+			return l;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Billet> getBilletsOfTrajet(Trajet trajet) {
+		if(trajet == null) {
+			return getBillets();
+		} else {
+			List<Billet> l = new ArrayList<Billet>();
+			Query q = pm.newQuery(Billet.class);
+			q.declareParameters("Trajet t");
+			q.setFilter("t == trajet");
+			Collection<Billet> c = (Collection<Billet>) q.execute(trajet);
+			if(c != null) {
+				l = new ArrayList<Billet>(c);
+			}
+			return l;
+		}
 	}
 
 	@Override
-	public List<Passager> searchPassager(String nom) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Gare> searchGare(String nom) {
+	public List<Billet> getBilletsOfPassager(Passager passager) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -38,7 +38,7 @@ public class VersantDatabase implements IDatabase {
 		PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory(p);
 		
 		pm = pmf.getPersistenceManager();
-		pm.currentTransaction().begin();
+		//pm.currentTransaction().begin();
 	}
 
 	@Override
@@ -64,5 +64,10 @@ public class VersantDatabase implements IDatabase {
 	@Override
 	public void close() {
 		pm.close();
+	}
+
+	@Override
+	public void delete(Object o) {
+		pm.deletePersistent(o);
 	}
 }

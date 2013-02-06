@@ -12,6 +12,7 @@ public interface DBOperations extends IDatabase {
 	
 	public List<Billet> getBillets();
 	public List<Billet> getBilletsOfTrajet(Trajet trajet);
+	public List<Billet> getBilletsOfPassager(Passager passager);
 	public List<Gare> getGares();
 	public List<Trajet> getTrajets();
 	public List<Passager> getPassagers();
