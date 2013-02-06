@@ -150,6 +150,7 @@ public class Console {
 
 	@Aide("Ferme l'application")
 	public void exit() {
+		db.commit();
 		db.close();
 		System.exit(0);
 	}

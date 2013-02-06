@@ -39,5 +39,6 @@ Systême UNIX :
 	pour lancer la console avec la base db4o
 		$> run-with-versant.sh
 
-Remarque : il peut y avoir des problèmes liés aux droits d'execution ; utiliser $> chmod +x fichier
-		
+Remarques : 
+	Il peut y avoir des problèmes liés aux droits d'execution ; utiliser $> chmod +x fichier
+	La console windows ayant un encodage des caractères hasardeux, il peut y avoir des caractères mal affichés selon les versions du système. Nous conseillons donc un terminal Unix.

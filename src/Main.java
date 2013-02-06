@@ -14,7 +14,7 @@ public class Main {
 		Console c = new Console(db);
 		c.start();
 		
+		db.commit();
 		db.close();
 	}
-
 }
