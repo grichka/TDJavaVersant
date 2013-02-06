@@ -1,3 +1,5 @@
+import java.util.Formatter;
+
 public class Billet {
 	private String code;
 
@@ -41,5 +43,26 @@ public class Billet {
 
 	public void setPrix(double prix) {
 		this.prix = prix;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Billet ");
+		if (code != null) {
+			builder.append(code);
+			builder.append(", ");
+		}
+		if (passager != null) {
+			builder.append(passager);
+			builder.append(", ");
+		};
+		Formatter f = new Formatter(builder);
+		f.format("%.2f €\n\t", prix);
+		
+		if (trajet != null) {
+			builder.append(trajet);
+		}
+		return builder.toString();
 	}
 }

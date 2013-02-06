@@ -54,7 +54,6 @@ public class Console {
 					System.err
 							.println("Une erreur est survenue lors de l'appel de la méthode");
 					e.printStackTrace();
-				} finally {
 					db.rollback();
 				}
 				
@@ -156,7 +155,7 @@ public class Console {
 
 	@Aide("Liste des billets")
 	public void billets() {
-		for (Billet billet : db.getBillets()) {
+		for (Billet billet : db.getBilletsOfTrajet(trajet)) {
 			System.out.println(billet);
 		}
 	}
@@ -215,6 +214,13 @@ public class Console {
 			System.out.println(trajet);
 
 			System.out.printf("\t%.2f €\n", trajet.prixActuel());
+		}
+	}
+	
+	@Aide("Liste les prix des billets")
+	public void prixbillets() {
+		for (Double prix : db.getPrixBillets()) {
+			System.out.printf("%.2f €\n", prix);
 		}
 	}
 
