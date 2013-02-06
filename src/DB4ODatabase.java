@@ -4,7 +4,7 @@ import com.db4o.ObjectContainer;
 
 public class DB4ODatabase implements IDatabase {
 
-	private ObjectContainer db;
+	protected ObjectContainer db;
 	
 	@Override
 	public void open() {

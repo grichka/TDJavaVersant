@@ -1,9 +1,9 @@
 import java.util.List;
 
 /**
- * Opérations possibles en base pour notre application.
+ * Opï¿½rations possibles en base pour notre application.
  */
-public interface DBOperations {
+public interface DBOperations extends IDatabase {
 	public Billet getBillet(String code);
 	public Gare getGare(String code);
 	public Trajet getTrajet(String code);

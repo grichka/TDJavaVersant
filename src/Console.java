@@ -14,10 +14,11 @@ public class Console {
 	private Scanner scanner;
 	private Gare gare;
 	
-	// TODO
-	public List<Gare> gares;
-	public List<Billet> billets;
-	public List<Trajet> trajets;
+	private DBOperations db;
+	
+	public Console(DBOperations db) {
+		this.db = db;
+	}
 
 	public void start() {
 		scanner = new Scanner(System.in);
@@ -32,9 +33,9 @@ public class Console {
 			try {
 				Method m = getClass().getDeclaredMethod(methodName);
 
-				// TODO transaction begin
+				db.begin();
 				m.invoke(this);
-				// TODO transaction end
+				db.commit();
 
 			} catch (NoSuchMethodException e) {
 				System.err.println("La commande " + methodName
@@ -46,6 +47,9 @@ public class Console {
 				System.err
 						.println("Une erreur est survenue lors de l'appel de la méthode");
 				e.printStackTrace();
+			}
+			finally {
+				db.rollback();
 			}
 
 			if (gare != null)
@@ -77,18 +81,16 @@ public class Console {
 
 	@Aide("Ferme l'application")
 	public void exit() {
-		// TODO close
-//		tx.commit();
-//		pm.close();
+		db.close();
 		System.exit(0);
 	}
 
 	@Aide("Liste des gares")
 	public void gares() {
-		for (int i = 0; i < gares.size(); ++i) {
-			System.out.print(i);
+		for (Gare gare : db.getGares()) {
+			System.out.print(gare.getCode());
 			System.out.print(" — ");
-			System.out.println(gares.get(i));
+			System.out.println(gare);
 		}
 	}
 	
@@ -103,25 +105,25 @@ public class Console {
 		 * Mais étant donné qu'il n'y a que 3000 gares, ce n'est pas très
 		 * grave.
 		 */
-		for (int i = 0; i < gares.size(); ++i) {
+		/*for (int i = 0; i < gares.size(); ++i) {
 			String gs = gares.get(i).toString();
 			if (gs.toLowerCase().indexOf(recherche.toLowerCase()) != -1) {
 				System.out.print(i);
 				System.out.print(" — ");
 				System.out.println(gares.get(i));				
 			}
-		}
+		}*/
 	}
 	
 	@Aide("Sélectionne une gare")
 	public void gare()
 	{
-		System.out.println("Numéro ?");
-		int num = Integer.parseInt(scanner.nextLine().trim());
+		System.out.println("Code ?");
+		String code = scanner.nextLine().trim();
 		
-		if (num >= 0 && num < gares.size())
-			gare = gares.get(num);
-		else
+		gare = db.getGare(code);
+		
+		if (gare == null)
 			System.err.println("Aucune gare ne correspond au numéro");
 	}
 	
@@ -135,12 +137,9 @@ public class Console {
 	@Aide("Liste des départs à partir d'une gare")
 	public void departs()
 	{
-		// TODO changer ça
-		ArrayList<Trajet> trajets = new ArrayList<>();
-		
-		for (Trajet t : this.trajets)
-			if (t.getDepart().equals(gare))
-				System.out.println(t);
+		for (Gare igare : db.getDestinations(gare, 100.0)) {
+			System.out.println(igare);
+		}
 	}
 
 }
