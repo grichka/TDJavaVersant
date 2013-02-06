@@ -93,6 +93,8 @@ public class DBDB40Operations extends DB4ODatabase implements DBOperations {
 
 	@Override
 	public List<Gare> getDestinations(final Gare gare, final Double distance) {
+		// Native query because it's the more beautiful way to check the distance
+		// which is calculated on the fly with GPS coordinates.
 		List<Trajet> trajets = db.query(new Predicate<Trajet>() {
 			private static final long serialVersionUID = -7447964717069554260L;
 
@@ -112,14 +114,30 @@ public class DBDB40Operations extends DB4ODatabase implements DBOperations {
 
 	@Override
 	public List<Trajet> getTrajets(Passager passager) {
-		// TODO Auto-generated method stub
-		return null;
+		// Retrieve trajets from billets
+		// Use of hash in order to eliminate duplicates
+		Set<Trajet> trajets = new HashSet<>();
+		List<Billet> billets = getBilletsOfPassager(passager);
+		
+		for (Billet billet : billets) {
+			trajets.add(billet.getTrajet());
+		}
+		
+		// Convert set to list
+		List<Trajet> ltrajets = new ArrayList<>();
+		ltrajets.addAll(trajets);
+		return ltrajets;
 	}
 
 	@Override
 	public List<Trajet> getTrajets(Passager passager1, Passager passager2) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Trajet> la = getTrajets(passager1);
+		List<Trajet> lb = getTrajets(passager2);
+		
+		// Intersect
+		la.retainAll(lb);
+		
+		return la;
 	}
 
 	@Override
@@ -129,6 +147,7 @@ public class DBDB40Operations extends DB4ODatabase implements DBOperations {
 		return db.query(new Predicate<Passager>() {
 			private static final long serialVersionUID = -7447964717069554262L;
 
+			// Match if the passenger's name contain the searched name
 			public boolean match(Passager passager) {
 				String nom = passager.getNom();
 				return nom != null && nom.toLowerCase().indexOf(lnom) != -1;
@@ -153,6 +172,8 @@ public class DBDB40Operations extends DB4ODatabase implements DBOperations {
 	@Override
 	public List<Double> getPrixBillets() {
 		List<Billet> billets = getBilletsOfTrajet(null);
+		
+		// Create a new list with just the price information
 		List<Double> prix = new ArrayList<>();
 		for (Billet billet : billets) {
 			prix.add(billet.getPrix());
@@ -183,8 +204,9 @@ public class DBDB40Operations extends DB4ODatabase implements DBOperations {
 
 	@Override
 	public List<Billet> getBilletsOfPassager(Passager passager) {
-		// TODO Auto-generated method stub
-		return null;
+		Billet proto = new Billet();
+		proto.setPassager(passager);
+		return db.queryByExample(proto);
 	}
 
 }

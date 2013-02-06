@@ -56,7 +56,10 @@ public class Billet {
 		if (passager != null) {
 			builder.append(passager);
 			builder.append(", ");
-		};
+		}
+		else {
+			builder.append("Passager anonyme, ");
+		}
 		Formatter f = new Formatter(builder);
 		f.format("%.2f €\n\t", prix);
 		
