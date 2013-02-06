@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -153,16 +152,18 @@ public class DBDB40Operations extends DB4ODatabase implements DBOperations {
 
 	@Override
 	public List<Double> getPrixBillets() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Billet> billets = getBilletsOfTrajet(null);
+		List<Double> prix = new ArrayList<>();
+		for (Billet billet : billets) {
+			prix.add(billet.getPrix());
+		}
+		return prix;
 	}
 
 	@Override
 	public List<Passager> getPassagersOfTrajet(Trajet trajet) {
-		Billet proto = new Billet();
-		proto.setTrajet(trajet);
 		Set<Passager> passagers = new HashSet<>();
-		List<Billet> billets = db.queryByExample(proto);
+		List<Billet> billets = getBilletsOfTrajet(trajet);
 		
 		for (Billet billet : billets) {
 			passagers.add(billet.getPassager());
@@ -171,6 +172,13 @@ public class DBDB40Operations extends DB4ODatabase implements DBOperations {
 		List<Passager> lpassagers = new ArrayList<>();
 		lpassagers.addAll(passagers);
 		return lpassagers;
+	}
+
+	@Override
+	public List<Billet> getBilletsOfTrajet(Trajet trajet) {
+		Billet proto = new Billet();
+		proto.setTrajet(trajet);
+		return db.queryByExample(proto);
 	}
 
 }
