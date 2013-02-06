@@ -1,9 +1,9 @@
 import java.util.List;
 
 /**
- * Oprations possibles en base pour notre application.
+ * Opérations possibles en base pour notre application.
  */
-public interface DBOperations {
+public interface DBOperations extends IDatabase {
 	public Billet getBillet(String code);
 	public Gare getGare(String code);
 	public Trajet getTrajet(String code);
@@ -17,15 +17,6 @@ public interface DBOperations {
 	
 	public List<Passager> searchPassager(String nom);
 	public List<Gare> searchGare(String nom);
-	
-	public void removeBillet(String code);
-	public void removeBillet(Billet billet);
-	public void removeGare(String code);
-	public void removeGare(Gare gare);
-	public void removeTrajet(String code);
-	public void removeTrajet(Trajet trajet);
-	public void removePassager(String numSecu);
-	public void removePassager(Passager passager);
 	
 	//requetes plus complexes
 	public int getNbBillets();

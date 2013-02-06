@@ -4,7 +4,7 @@ import com.db4o.ObjectContainer;
 
 public class DB4ODatabase implements IDatabase {
 
-	private ObjectContainer db;
+	protected ObjectContainer db;
 	
 	@Override
 	public void open() {
@@ -35,5 +35,10 @@ public class DB4ODatabase implements IDatabase {
 	@Override
 	public void begin() {
 		//rien
+	}
+
+	@Override
+	public void delete(Object o) {
+		db.delete(o);
 	}
 }
