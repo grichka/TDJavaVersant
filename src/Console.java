@@ -12,10 +12,12 @@ import java.util.Set;
 public class Console {
 
 	private Scanner scanner;
+	
 	private Gare gare;
-	
+	private Trajet trajet;
+
 	private DBOperations db;
-	
+
 	public Console(DBOperations db) {
 		this.db = db;
 	}
@@ -30,31 +32,38 @@ public class Console {
 
 			String methodName = scanner.nextLine().trim();
 
-			try {
-				Method m = getClass().getDeclaredMethod(methodName);
+			if (methodName.length() > 0) {
 
-				db.begin();
-				m.invoke(this);
-				db.commit();
+				try {
+					Method m = getClass().getDeclaredMethod(methodName);
 
-			} catch (NoSuchMethodException e) {
-				System.err.println("La commande " + methodName
-						+ " est inconnue. Tapez help pour obtenir de l'aide.");
-			} catch (SecurityException e) {
-				System.err.println("Vous ne pouvez pas appelez cette méthode");
-			} catch (IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				System.err
-						.println("Une erreur est survenue lors de l'appel de la méthode");
-				e.printStackTrace();
+					db.begin();
+					m.invoke(this);
+					db.commit();
+
+				} catch (NoSuchMethodException e) {
+					System.err
+							.println("La commande "
+									+ methodName
+									+ " est inconnue. Tapez help pour obtenir de l'aide.");
+				} catch (SecurityException e) {
+					System.err
+							.println("Vous ne pouvez pas appelez cette méthode");
+				} catch (IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException e) {
+					System.err
+							.println("Une erreur est survenue lors de l'appel de la méthode");
+					e.printStackTrace();
+				} finally {
+					db.rollback();
+				}
+				
+				if (trajet != null)
+					System.out.print("Trajet " + trajet.getCode());
+				else if (gare != null)
+					System.out.print(gare.getNom());
+				System.out.print("> ");
 			}
-			finally {
-				db.rollback();
-			}
-
-			if (gare != null)
-				System.out.print(gare.getNom());
-			System.out.print("> ");
 		}
 
 	}
@@ -84,6 +93,12 @@ public class Console {
 		db.close();
 		System.exit(0);
 	}
+	
+	@Aide("Réinitialise le contexte actuel")
+	public void reset() {
+		gare = null;
+		trajet = null;
+	}
 
 	@Aide("Liste des gares")
 	public void gares() {
@@ -93,52 +108,113 @@ public class Console {
 			System.out.println(gare);
 		}
 	}
-	
+
 	@Aide("Rechercher des gares")
-	public void cgares()
-	{
+	public void cgares() {
+		System.out.println("Recherche: ");
+		String recherche = scanner.nextLine().trim();
+
+		for (Gare gare : db.searchGare(recherche)) {
+			System.out.print(gare.getCode());
+			System.out.print(" — ");
+			System.out.println(gare);
+		}
+	}
+	
+	@Aide("Liste de passagers")
+	public void passagers() {
+		for (Passager passager : db.getPassagersOfTrajet(trajet)) {
+			System.out.println(passager);
+		}
+	}
+	
+	@Aide("Rechercher des passagers")
+	public void cpassagers() {
 		System.out.println("Recherche: ");
 		String recherche = scanner.nextLine().trim();
 		
-		/* L'algorithme n'est pas très optimisé parce que la recherche
-		 * est réalisée en O(n).
-		 * Mais étant donné qu'il n'y a que 3000 gares, ce n'est pas très
-		 * grave.
-		 */
-		/*for (int i = 0; i < gares.size(); ++i) {
-			String gs = gares.get(i).toString();
-			if (gs.toLowerCase().indexOf(recherche.toLowerCase()) != -1) {
-				System.out.print(i);
-				System.out.print(" — ");
-				System.out.println(gares.get(i));				
-			}
-		}*/
+		for (Passager passager : db.searchPassager(recherche)) {
+			System.out.println(passager);
+		}
 	}
-	
+
 	@Aide("Sélectionne une gare")
-	public void gare()
-	{
+	public void gare() {
 		System.out.println("Code ?");
-		String code = scanner.nextLine().trim();
-		
+		String code = scanner.nextLine().trim().toUpperCase();
+
 		gare = db.getGare(code);
-		
+
 		if (gare == null)
 			System.err.println("Aucune gare ne correspond au numéro");
 	}
 	
-	
+	@Aide("Déselectionne la gare")
+	public void fgare() {
+		gare = null;
+	}
+
 	@Aide("Liste des billets")
 	public void billets() {
-		
+		for (Billet billet : db.getBillets()) {
+			System.out.println(billet);
+		}
+	}
 
+	@Aide("Affichage du nombre de billets")
+	public void nbbillets() {
+		System.out.println(db.getNbBillets());
 	}
 	
-	@Aide("Liste des départs à partir d'une gare")
-	public void departs()
-	{
-		for (Gare igare : db.getDestinations(gare, 100.0)) {
-			System.out.println(igare);
+	@Aide("Sélectionne un trajet")
+	public void trajet() {
+		System.out.println("Code ?");
+		String code = scanner.nextLine().trim().toUpperCase();
+
+		trajet = db.getTrajet(code);
+
+		if (trajet == null)
+			System.err.println("Aucune trajet ne correspond au numéro");
+	}
+	
+	@Aide("Déselectionne un trajet")
+	public void ftrajet() {
+		trajet = null;
+	}
+	
+	@Aide("Liste des destinations")
+	public void destinations() {
+		if (gare != null) {
+			System.out.println("Distance maximale (en km) ?");
+			double distance = Double.parseDouble(scanner.nextLine().trim());
+			
+			for (Gare g : db.getDestinations(gare, distance*1000.0)) {
+				System.out.print(g);
+				System.out.printf(" — %.0f km\n", g.distanceTo(gare)/1000.0);
+			}
+		} else {
+			System.out.println("Vous devez sélectionner une gare pour utiliser cette fonctionnalité");
+		}
+	}
+	
+	@Aide("Liste des départs")
+	public void departs() {
+		for (Trajet trajet : db.getTrajetsFromGare(gare)) {
+			System.out.print(trajet.getCode());
+			System.out.print(" — ");
+			System.out.println(trajet);
+			System.out.printf("\t%.2f €\n", trajet.prixActuel());
+		}
+	}
+
+	@Aide("Liste des arrivées")
+	public void arrivees() {
+		for (Trajet trajet : db.getTrajetsToGare(gare)) {
+			System.out.print(trajet.getCode());
+			System.out.print(" — ");
+			System.out.println(trajet);
+
+			System.out.printf("\t%.2f €\n", trajet.prixActuel());
 		}
 	}
 

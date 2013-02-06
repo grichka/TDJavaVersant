@@ -160,22 +160,18 @@ public class Passager {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Passager [");
+		
 		if (numSecu != null) {
-			builder.append("numSecu=");
 			builder.append(numSecu);
-			builder.append(", ");
+			builder.append(" — ");
 		}
 		if (nom != null) {
-			builder.append("nom=");
 			builder.append(nom);
-			builder.append(", ");
+			builder.append(" ");
 		}
 		if (prenom != null) {
-			builder.append("prenom=");
 			builder.append(prenom);
 		}
-		builder.append("]");
 		return builder.toString();
 	}
 }

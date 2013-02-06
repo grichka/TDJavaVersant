@@ -209,9 +209,11 @@ public class InitialisationData {
 			Trajet trajet = trajets.get(r.nextInt(trajets.size()));
 			billet.setPrix(trajet.prixActuel());
 			billet.setTrajet(trajet);
+			trajet.setNbPlacesReservees(trajet.getNbPlacesReservees()+1);
 			
 			billets.add(billet);
 			data.persist(billet);
+			data.persist(trajet);
 		}
 		
 		System.out.println("Création de 200000 billets");

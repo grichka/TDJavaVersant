@@ -87,32 +87,28 @@ public class Trajet {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Trajet [");
 		if (depart != null) {
-			builder.append("depart=");
 			builder.append(depart);
-			builder.append(", ");
+			builder.append(" — ");
 		}
 		if (arrivee != null) {
-			builder.append("arrivee=");
 			builder.append(arrivee);
-			builder.append(", ");
+			builder.append("\n");
 		}
-		builder.append("nbPlaces=");
-		builder.append(nbPlaces);
-		builder.append(", nbPlacesReservees=");
+		
+		builder.append("\t");
 		builder.append(nbPlacesReservees);
-		builder.append(", ");
+		builder.append(" / ");
+		builder.append(nbPlaces);
+		builder.append(" — ");
+		
 		if (dateDepart != null) {
-			builder.append("dateDepart=");
 			builder.append(dateDepart);
-			builder.append(", ");
+			builder.append(" — ");
 		}
 		if (dateArrivee != null) {
-			builder.append("dateArrivee=");
 			builder.append(dateArrivee);
 		}
-		builder.append("]");
 		return builder.toString();
 	}
 }
