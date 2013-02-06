@@ -4,7 +4,7 @@ import java.util.List;
 import javax.jdo.Query;
 
 /**
- * Opérations possibles sur la base de données Versant.
+ * OpÃ©rations possibles sur la base de donnÃ©es Versant.
  */
 public class DBVersantOperations extends VersantDatabase implements DBOperations {
 	public DBVersantOperations() {
@@ -182,6 +182,15 @@ public class DBVersantOperations extends VersantDatabase implements DBOperations
 	}
 	
 	@Override
+	public List<Double> getPrixBillets() {
+		List<Double> prix = new ArrayList<Double>();
+		Query q = pm.newQuery("select");
+		
+		
+		return prix;
+	}
+	
+	@Override
 	public List<Gare> getDestinations(Gare gare, Double distance) {
 		List<Gare> gares = new ArrayList<Gare>();
 		for(Trajet t : getTrajetsFromGare(gare)) {
@@ -219,5 +228,17 @@ public class DBVersantOperations extends VersantDatabase implements DBOperations
 			l.add(b.getTrajet());
 		}
 		return l;
-	}	
+	}
+
+	@Override
+	public List<Passager> searchPassager(String nom) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Gare> searchGare(String nom) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

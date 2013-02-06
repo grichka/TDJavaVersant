@@ -156,4 +156,22 @@ public class DBDB40Operations extends DB4ODatabase implements DBOperations {
 		return null;
 	}
 
+	@Override
+	public List<Passager> searchPassager(String nom) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Gare> searchGare(String nom) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Double> getPrixBillets() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
