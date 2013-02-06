@@ -1,4 +1,5 @@
 .settings/
 bin/
+build/
 .*
 database.db4o
