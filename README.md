@@ -3,6 +3,11 @@ TDJavaVersant
 
 Projet en Java utilisant les technologies Versant et DB4O. Ce projet a pour but la prise en main des technologies de persistance objet Versant et DB4O.
 
+Données de test
+===============
+Dans un but d'avoir une base de données peuplée de nombreuses informations, nous avons importé 3000 gares associées à des coordonées GPS venant du site data.gouv.fr
+15000 trajets aléatoires ont étés générés à partir de ces gares, et 50 000 clients achètent 200 000 billets. 
+
 Installation/Lancement
 ======================
 Windows :
