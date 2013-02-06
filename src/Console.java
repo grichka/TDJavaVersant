@@ -13,8 +13,11 @@ public class Console {
 
 	private Scanner scanner;
 	
+	// Sessions var
 	private Gare gare;
 	private Trajet trajet;
+	private Billet billet;
+	private Passager passager;
 
 	private DBOperations db;
 
@@ -56,8 +59,11 @@ public class Console {
 					e.printStackTrace();
 					db.rollback();
 				}
-				
-				if (trajet != null)
+				if (billet != null)
+					System.out.println("Billet "+billet.getCode());
+				else if (passager != null)
+					System.out.println("Passager "+billet.getCode());
+				else if (trajet != null)
 					System.out.print("Trajet " + trajet.getCode());
 				else if (gare != null)
 					System.out.print(gare.getNom());
