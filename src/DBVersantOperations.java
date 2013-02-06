@@ -275,7 +275,7 @@ public class DBVersantOperations extends VersantDatabase implements DBOperations
 			List<Billet> l = new ArrayList<Billet>();
 			Query q = pm.newQuery(Billet.class);
 			q.declareParameters("Trajet t");
-			q.setFilter("t == trajet");
+			q.setFilter("trajet == t");
 			Collection<Billet> c = (Collection<Billet>) q.execute(trajet);
 			if(c != null) {
 				l = new ArrayList<Billet>(c);
@@ -284,9 +284,21 @@ public class DBVersantOperations extends VersantDatabase implements DBOperations
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Billet> getBilletsOfPassager(Passager passager) {
-		// TODO Auto-generated method stub
-		return null;
+		if(passager == null) {
+			return getBillets();
+		} else {
+			List<Billet> l = new ArrayList<Billet>();
+			Query q = pm.newQuery(Billet.class);
+			q.declareParameters("Passager p");
+			q.setFilter("passager == p");
+			Collection<Billet> c = (Collection<Billet>) q.execute(passager);
+			if(c != null) {
+				l = new ArrayList<Billet>(c);
+			}
+			return l;
+		}
 	}
 }

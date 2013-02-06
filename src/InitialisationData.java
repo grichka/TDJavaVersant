@@ -8,8 +8,12 @@ import java.util.Scanner;
 public class InitialisationData {
 
 	public static void main(String[] args) throws Exception {
-		//IDatabase data = new DB4ODatabase();
-		IDatabase data = new VersantDatabase();
+		IDatabase data;
+		if(args.length > 0 && "db4o".equals(args[0])) {
+			data = new DB4ODatabase();
+		} else {
+			data = new VersantDatabase();
+		}
 		data.open();
 		
 		System.out.println("Initialisation des données");
