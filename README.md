@@ -8,7 +8,7 @@ Installation/Lancement
 Windows :
 	se placer dans le dossier du projet avec cmd.
 	executer :
-		$> chcp 65001
+		$> chcp 65001 (passage de la console en UTF-8)
 		$> ant
 	executer l'un des fichier .bat
 	pour peupler une base versant (nom : versantDB)
@@ -24,7 +24,7 @@ Systême UNIX :
 	se placer dans le dossier du projet avec un terminal.
 	executer :
 		$> ant
-	executer l'un des fichier .bat
+	executer l'un des fichier .sh
 	pour peupler une base versant (nom : versantDB)
 		$> peupler-versant.sh
 	pour peupler une base DB4o
