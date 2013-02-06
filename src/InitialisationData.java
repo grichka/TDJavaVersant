@@ -8,9 +8,15 @@ import java.util.Scanner;
 public class InitialisationData {
 
 	public static void main(String[] args) throws Exception {
-		//IDatabase data = new DB4ODatabase();
-		IDatabase data = new VersantDatabase();
-		data.open();
+		IDatabase data;
+		if(args.length > 0 && "db4o".equals(args[0])) {
+			data = new DB4ODatabase();
+			data.open();
+		} else {
+			data = new VersantDatabase();
+			data.open();
+			data.begin();
+		}
 		
 		System.out.println("Initialisation des données");
 		
@@ -222,11 +228,5 @@ public class InitialisationData {
 		data.close();
 		
 		System.out.println("Initialisation des données terminée");
-		
-		/*Console c = new Console();
-		c.gares = gares;
-		c.trajets = trajets;
-		c.billets = billets;
-		c.start();*/
 	}
 }
