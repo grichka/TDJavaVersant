@@ -42,3 +42,4 @@ Systême UNIX :
 Remarques : 
 	Il peut y avoir des problèmes liés aux droits d'execution ; utiliser $> chmod +x fichier
 	La console windows ayant un encodage des caractères hasardeux, il peut y avoir des caractères mal affichés selon les versions du système. Nous conseillons donc un terminal Unix.
+	Notre interface console permet de faire toute sorte d'opérations, notamment pour des gares spécifiques, trajets spécifiques, etc.
