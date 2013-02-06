@@ -36,4 +36,9 @@ public class DB4ODatabase implements IDatabase {
 	public void begin() {
 		//rien
 	}
+
+	@Override
+	public void delete(Object o) {
+		db.delete(o);
+	}
 }

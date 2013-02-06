@@ -73,54 +73,6 @@ public class DBDB40Operations extends DB4ODatabase implements DBOperations {
 	}
 
 	@Override
-	public void removeBillet(String code) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void removeBillet(Billet billet) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void removeGare(String code) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void removeGare(Gare gare) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void removeTrajet(String code) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void removeTrajet(Trajet trajet) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void removePassager(String numSecu) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void removePassager(Passager passager) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public int getNbBillets() {
 		// TODO Auto-generated method stub
 		return 0;

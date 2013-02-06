@@ -105,46 +105,6 @@ public class DBVersantOperations extends VersantDatabase implements DBOperations
 		return l;
 	}
 
-	@Override
-	public void removeBillet(String code) {
-		pm.deletePersistent(getBillet(code));
-	}
-	
-	@Override
-	public void removeBillet(Billet billet) {
-		pm.deletePersistent(billet);
-	}
-
-	@Override
-	public void removeGare(String code) {
-		pm.deletePersistent(getGare(code));
-	}
-	
-	@Override
-	public void removeGare(Gare gare) {
-		pm.deletePersistent(gare);
-	}
-
-	@Override
-	public void removeTrajet(String code) {
-		pm.deletePersistent(getTrajet(code));
-	}
-
-	@Override
-	public void removeTrajet(Trajet trajet) {
-		pm.deletePersistent(trajet);
-	}
-	
-	@Override
-	public void removePassager(String numSecu) {
-		pm.deletePersistent(getPassager(numSecu));
-	}
-	
-	@Override
-	public void removePassager(Passager passager) {
-		pm.deletePersistent(passager);
-	}
-
 	@SuppressWarnings("rawtypes")
 	@Override
 	public int getNbBillets() {
