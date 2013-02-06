@@ -11,10 +11,12 @@ public class InitialisationData {
 		IDatabase data;
 		if(args.length > 0 && "db4o".equals(args[0])) {
 			data = new DB4ODatabase();
+			data.open();
 		} else {
 			data = new VersantDatabase();
+			data.open();
+			data.begin();
 		}
-		data.open();
 		
 		System.out.println("Initialisation des données");
 		
@@ -226,11 +228,5 @@ public class InitialisationData {
 		data.close();
 		
 		System.out.println("Initialisation des données terminée");
-		
-		/*Console c = new Console();
-		c.gares = gares;
-		c.trajets = trajets;
-		c.billets = billets;
-		c.start();*/
 	}
 }
