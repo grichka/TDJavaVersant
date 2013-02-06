@@ -47,6 +47,11 @@ public class VersantDatabase implements IDatabase {
 	}
 
 	@Override
+	public void begin() {
+		pm.currentTransaction().begin();
+	}
+	
+	@Override
 	public void commit() {
 		pm.currentTransaction().commit();
 	}
@@ -59,10 +64,5 @@ public class VersantDatabase implements IDatabase {
 	@Override
 	public void close() {
 		pm.close();
-	}
-
-	@Override
-	public void begin() {
-		pm.currentTransaction().begin();
 	}
 }
